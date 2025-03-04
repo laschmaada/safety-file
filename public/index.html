@@ -1,43 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Safety File Management</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f5f5f5;
+    }
+    
+    .review-index-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .header-logo {
+      font-weight: bold;
+      font-size: 24px;
+    }
+    
+    .header-text {
+      text-align: right;
+    }
+    
+    .header-text h2 {
+      color: #003087;
+      margin: 0;
+    }
+    
+    .header-text p {
+      margin: 0.5rem 0 0;
+      font-size: 0.9rem;
+    }
+    
+    .page-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: bold;
+    }
+    
+    .review-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-group input {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .half {
+      flex: 1;
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+    
+    .save-button, .next-button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .save-button {
+      background-color: #003087;
+      color: white;
+    }
+    
+    .next-button {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    .save-button:hover {
+      background-color: #002266;
+    }
+    
+    .next-button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const ReviewIndexPage = () => {
+      const [formData, setFormData] = React.useState({
+        contractorCompanyName: '',
+        servicesDepartment: '',
+        companyVendorProjectNumber: '',
+        startingDate: '',
+        completionDate: '',
+        responsibleCompanyRepresentative: ''
+      });
+      
+      React.useEffect(() => {
+        const savedData = localStorage.getItem('reviewIndexData');
+        if (savedData) {
+          setFormData(JSON.parse(savedData));
+        }
+      }, []);
+      
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+          ...formData,
+          [name]: value
+        });
+      };
+      
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        localStorage.setItem('reviewIndexData', JSON.stringify(formData));
+        alert('Data saved successfully!');
+      };
+      
+      const handleNext = () => {
+        localStorage.setItem('reviewIndexData', JSON.stringify(formData));
+        alert('Data saved! Next page functionality will be implemented later.');
+      };
+      
+      return (
+        <div className="review-index-container">
+          <header className="review-header">
+            <div className="header-logo">LOGO</div>
+            <div className="header-text">
+              <h2>PLATINUM</h2>
+              <p>RBMR-ALL-ENG-PRO-0007-FRM-0003    Rev 9.0</p>
+            </div>
+          </header>
+          
+          <h1 className="page-title">REVIEW INDEX</h1>
+          
+          <form onSubmit={handleSubmit} className="review-form">
+            <div className="form-group">
+              <label htmlFor="contractorCompanyName">CONTRACTORS COMPANY'S NAME:</label>
+              <input
+                type="text"
+                id="contractorCompanyName"
+                name="contractorCompanyName"
+                value={formData.contractorCompanyName}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="servicesDepartment">SERVICES/DEPARTMENT:</label>
+              <input
+                type="text"
+                id="servicesDepartment"
+                name="servicesDepartment"
+                value={formData.servicesDepartment}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="companyVendorProjectNumber">COMPANY'S VENDOR/PROJECT NUMBER:</label>
+              <input
+                type="text"
+                id="companyVendorProjectNumber"
+                name="companyVendorProjectNumber"
+                value={formData.companyVendorProjectNumber}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            <div className="form-row">
+              <div className="form-group half">
+                <label htmlFor="startingDate">STARTING DATE:</label>
+                <input
+                  type="date"
+                  id="startingDate"
+                  name="startingDate"
+                  value={formData.startingDate}
+                  onChange={handleInputChange}
+                />
+              </div>
+              
+              <div className="form-group half">
+                <label htmlFor="completionDate">COMPLETION DATE:</label>
+                <input
+                  type="date"
+                  id="completionDate"
+                  name="completionDate"
+                  value={formData.completionDate}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="responsibleCompanyRepresentative">RESPONSIBLE COMPANY REPRESENTATIVE:</label>
+              <input
+                type="text"
+                id="responsibleCompanyRepresentative"
+                name="responsibleCompanyRepresentative"
+                value={formData.responsibleCompanyRepresentative}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            <div className="form-actions">
+              <button type="submit" className="save-button">Save</button>
+              <button type="button" className="next-button" onClick={handleNext}>Next</button>
+            </div>
+          </form>
+        </div>
+      );
+    };
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    // Main App component
+    const App = () => {
+      return <ReviewIndexPage />;
+    };
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    // Render the App
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
 </html>
