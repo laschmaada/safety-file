@@ -300,7 +300,8 @@
         companyVendorProjectNumber: '',
         startingDate: '',
         completionDate: '',
-        responsibleCompanyRepresentative: ''
+        responsibleCompanyRepresentative: '',
+        projectScopeOfWork: null
       });
       
       React.useEffect(() => {
@@ -315,6 +316,68 @@
         setFormData({
           ...formData,
           [name]: value
+        });
+      }
+      
+      function handleFileUpload(e) {
+        const file = e.target.files[0];
+        if (file && file.type === 'application/pdf') {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            setFormData({
+              ...formData,
+              projectScopeOfWork: {
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                data: event.target.result,
+                uploadDate: new Date().toISOString()
+              }
+            });
+          };
+          reader.readAsDataURL(file);
+        }
+        e.target.value = null;
+      }
+      
+      function handleViewDocument() {
+        if (!formData.projectScopeOfWork) return;
+        
+        const pdfWindow = window.open('');
+        pdfWindow.document.write(`
+          <html>
+            <head>
+              <title>Project Scope of Work</title>
+              <style>
+                body, html {
+                  margin: 0;
+                  padding: 0;
+                  height: 100%;
+                  overflow: hidden;
+                }
+                embed {
+                  width: 100%;
+                  height: 100%;
+                }
+              </style>
+            </head>
+            <body>
+              <embed 
+                src="${formData.projectScopeOfWork.data}" 
+                type="application/pdf" 
+                width="100%" 
+                height="100%" 
+              />
+            </body>
+          </html>
+        `);
+        pdfWindow.document.close();
+      }
+      
+      function handleDeleteDocument() {
+        setFormData({
+          ...formData,
+          projectScopeOfWork: null
         });
       }
       
@@ -410,6 +473,49 @@
               />
             </div>
             
+            <div className="form-group scope-of-work-section">
+              <label>PROJECT SCOPE OF WORK:</label>
+              <div className="scope-upload-container" style={{ marginTop: '1rem' }}>
+                <input 
+                  type="file" 
+                  id="scope-upload" 
+                  accept=".pdf" 
+                  onChange={handleFileUpload}
+                  className="file-input"
+                />
+                <label htmlFor="scope-upload" className="upload-button">
+                  {formData.projectScopeOfWork ? 'Replace PDF' : 'Upload PDF'}
+                </label>
+                
+                {formData.projectScopeOfWork && (
+                  <div className="uploaded-document">
+                    <div className="document-info">
+                      <span className="document-name">{formData.projectScopeOfWork.name}</span>
+                      <span className="document-size">
+                        ({Math.round(formData.projectScopeOfWork.size / 1024)} KB)
+                      </span>
+                    </div>
+                    <div className="document-actions">
+                      <button 
+                        type="button"
+                        className="view-button" 
+                        onClick={handleViewDocument}
+                      >
+                        View
+                      </button>
+                      <button 
+                        type="button"
+                        className="delete-button" 
+                        onClick={handleDeleteDocument}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            
             <div className="form-actions">
               <button type="submit" className="save-button">Save</button>
               <button type="button" className="next-button" onClick={handleNext}>Next</button>
@@ -441,7 +547,18 @@
         'Inspection and Audits',
         'SHE Specs',
         'Method Statements and RA',
-        'LOGS'
+        'LOGS',
+        'Tax Clearance',
+        'SHE Policies',
+        'Overtime Forms',
+        'SHE Commitee Minutes',
+        'PTO and VFL',
+        'CR5K(1)(k) and CR7(1)(C)(v)',
+        'MSDS',
+        'AA Aplicable Policies',
+        'Incident and Disciplinanry Docs',
+        'Site Establishment',
+        'Checklists'
       ];
       
       // Handle file upload
