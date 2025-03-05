@@ -124,13 +124,176 @@
     .next-button:hover {
       background-color: #3e8e41;
     }
+    
+    /* New styles for the tabs page */
+    .tabs-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: #003087;
+      color: white;
+      padding: 2rem 0;
+    }
+    
+    .tab-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .tab-item {
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .tab-item:hover {
+      background-color: #002266;
+    }
+    
+    .tab-item.active {
+      background-color: #002266;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+    }
+    
+    .tab-content {
+      background-color: white;
+      border-radius: 4px;
+      padding: 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-button {
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    <style>
+        /* Existing styles remain unchanged */
+        
+        /* New styles for document management */
+        .document-upload-section {
+          margin-bottom: 2rem;
+          padding: 1.5rem;
+          background-color: #f9f9f9;
+          border-radius: 4px;
+          border: 1px solid #eee;
+        }
+        
+        .upload-controls {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+          margin-top: 1rem;
+        }
+        
+        .file-input {
+          display: none;
+        }
+        
+        .upload-button {
+          padding: 0.75rem 1.5rem;
+          background-color: #003087;
+          color: white;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        
+        .upload-button:hover {
+          background-color: #002266;
+        }
+        
+        .document-list {
+          margin-top: 2rem;
+        }
+        
+        .document-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
+          margin-bottom: 0.5rem;
+          background-color: #f5f5f5;
+          border-radius: 4px;
+          border-left: 4px solid #003087;
+        }
+        
+        .document-name {
+          font-weight: bold;
+          margin-right: 0.5rem;
+        }
+        
+        .document-size {
+          color: #666;
+          font-size: 0.9rem;
+        }
+        
+        .document-actions {
+          display: flex;
+          gap: 0.5rem;
+        }
+        
+        .view-button {
+          padding: 0.5rem 1rem;
+          background-color: #003087;
+          color: white;
+          text-decoration: none;
+          border-radius: 4px;
+          font-size: 0.9rem;
+        }
+        
+        .delete-button {
+          padding: 0.5rem 1rem;
+          background-color: #d9534f;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 0.9rem;
+        }
+        
+        .delete-button:hover {
+          background-color: #c9302c;
+        }
+      </style>
   </style>
 </head>
 <body>
   <div id="root"></div>
   
   <script type="text/babel">
-    const ReviewIndexPage = () => {
+    function App() {
+      const [page, setPage] = React.useState('reviewIndex');
+      
+      function goToTabs() {
+        setPage('tabs');
+      }
+      
+      function goToReviewIndex() {
+        setPage('reviewIndex');
+      }
+      
+      if (page === 'reviewIndex') {
+        return <ReviewIndexPage onNext={goToTabs} />;
+      } else {
+        return <TabsPage onBack={goToReviewIndex} />;
+      }
+    }
+    
+    function ReviewIndexPage({ onNext }) {
       const [formData, setFormData] = React.useState({
         contractorCompanyName: '',
         servicesDepartment: '',
@@ -147,24 +310,24 @@
         }
       }, []);
       
-      const handleInputChange = (e) => {
+      function handleInputChange(e) {
         const { name, value } = e.target;
         setFormData({
           ...formData,
           [name]: value
         });
-      };
+      }
       
-      const handleSubmit = (e) => {
+      function handleSubmit(e) {
         e.preventDefault();
         localStorage.setItem('reviewIndexData', JSON.stringify(formData));
         alert('Data saved successfully!');
-      };
+      }
       
-      const handleNext = () => {
+      function handleNext() {
         localStorage.setItem('reviewIndexData', JSON.stringify(formData));
-        alert('Data saved! Next page functionality will be implemented later.');
-      };
+        onNext();
+      }
       
       return (
         <div className="review-index-container">
@@ -254,14 +417,211 @@
           </form>
         </div>
       );
-    };
-
-    // Main App component
-    const App = () => {
-      return <ReviewIndexPage />;
-    };
-
-    // Render the App
+    }
+    
+    function TabsPage({ onBack }) {
+      const [activeTab, setActiveTab] = React.useState('Organogram');
+      const [documents, setDocuments] = React.useState({});
+      
+      // Load saved documents from localStorage when component mounts
+      React.useEffect(() => {
+        const savedDocs = localStorage.getItem('tabDocuments');
+        if (savedDocs) {
+          setDocuments(JSON.parse(savedDocs));
+        }
+      }, []);
+      
+      const tabs = [
+        'Organogram',
+        'Personal Information',
+        '37.2 Agreement',
+        'Legal Appointments',
+        'Notice of Construction',
+        'Toolbox Talk',
+        'Inspection and Audits',
+        'SHE Specs',
+        'Method Statements and RA',
+        'LOGS'
+      ];
+      
+      // Handle file upload
+      function handleFileUpload(event) {
+        const files = Array.from(event.target.files);
+        
+        files.forEach(file => {
+          if (file.type === 'application/pdf') {
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+              const fileData = {
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                lastModified: file.lastModified,
+                data: e.target.result,
+                uploadDate: new Date().toISOString()
+              };
+              
+              setDocuments(prevDocs => {
+                const tabDocs = prevDocs[activeTab] || [];
+                return {
+                  ...prevDocs,
+                  [activeTab]: [...tabDocs, fileData]
+                };
+              });
+            };
+            
+            reader.readAsDataURL(file);
+          }
+        });
+        
+        event.target.value = null;
+      }
+      
+      // Handle document deletion
+      function handleDeleteDocument(index) {
+        setDocuments(prevDocs => {
+          const tabDocs = [...(prevDocs[activeTab] || [])];
+          tabDocs.splice(index, 1);
+          return {
+            ...prevDocs,
+            [activeTab]: tabDocs
+          };
+        });
+      }
+      
+      // Save documents to localStorage
+      function handleSaveDocuments() {
+        localStorage.setItem('tabDocuments', JSON.stringify(documents));
+        alert('Documents saved successfully!');
+      }
+      
+      // Handle document viewing - Adding this missing function
+      function handleViewDocument(docData) {
+        // Create a new window with the PDF content
+        const pdfWindow = window.open('');
+        pdfWindow.document.write(`
+          <html>
+            <head>
+              <title>PDF Viewer</title>
+              <style>
+                body, html {
+                  margin: 0;
+                  padding: 0;
+                  height: 100%;
+                  overflow: hidden;
+                }
+                embed {
+                  width: 100%;
+                  height: 100%;
+                }
+              </style>
+            </head>
+            <body>
+              <embed 
+                src="${docData}" 
+                type="application/pdf" 
+                width="100%" 
+                height="100%" 
+              />
+            </body>
+          </html>
+        `);
+        pdfWindow.document.close();
+      }
+      
+      // Render the list of documents for the current tab
+      function renderDocumentList() {
+        const tabDocs = documents[activeTab] || [];
+        
+        if (tabDocs.length === 0) {
+          return <p>No documents uploaded for this tab.</p>;
+        }
+        
+        return (
+          <div className="document-list">
+            <h3>Uploaded Documents</h3>
+            <ul>
+              {tabDocs.map((doc, index) => (
+                <li key={index} className="document-item">
+                  <div className="document-info">
+                    <span className="document-name">{doc.name}</span>
+                    <span className="document-size">({Math.round(doc.size / 1024)} KB)</span>
+                  </div>
+                  <div className="document-actions">
+                    <button 
+                      className="view-button" 
+                      onClick={() => handleViewDocument(doc.data)}
+                    >
+                      View
+                    </button>
+                    <button 
+                      className="delete-button" 
+                      onClick={() => handleDeleteDocument(index)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+      
+      return (
+        <div className="tabs-container">
+          <div className="sidebar">
+            <ul className="tab-list">
+              {tabs.map(tab => (
+                <li 
+                  key={tab} 
+                  className={`tab-item ${activeTab === tab ? 'active' : ''}`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="content-area">
+            <button className="back-button" onClick={onBack}>
+              &larr; Back to Review Index
+            </button>
+            <div className="tab-content">
+              <h2>{activeTab}</h2>
+              <p>Content for {activeTab} will be implemented here.</p>
+              
+              <div className="document-upload-section">
+                <h3>Upload PDF Documents</h3>
+                <div className="upload-controls">
+                  <input 
+                    type="file" 
+                    id="pdf-upload" 
+                    accept=".pdf" 
+                    multiple 
+                    onChange={handleFileUpload}
+                    className="file-input"
+                  />
+                  <label htmlFor="pdf-upload" className="upload-button">
+                    Select PDF Files
+                  </label>
+                  <button 
+                    className="save-button" 
+                    onClick={handleSaveDocuments}
+                  >
+                    Save Documents
+                  </button>
+                </div>
+              </div>
+              
+              {renderDocumentList()}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
