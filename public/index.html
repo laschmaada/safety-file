@@ -7,269 +7,8 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      background-color: #f5f5f5;
-    }
-    
-    .review-index-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .review-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #ddd;
-    }
-    
-    .header-logo {
-      font-weight: bold;
-      font-size: 24px;
-    }
-    
-    .header-text {
-      text-align: right;
-    }
-    
-    .header-text h2 {
-      color: #003087;
-      margin: 0;
-    }
-    
-    .header-text p {
-      margin: 0.5rem 0 0;
-      font-size: 0.9rem;
-    }
-    
-    .page-title {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-weight: bold;
-    }
-    
-    .review-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .form-group label {
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-    
-    .form-group input {
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    
-    .form-row {
-      display: flex;
-      gap: 1rem;
-    }
-    
-    .half {
-      flex: 1;
-    }
-    
-    .form-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 2rem;
-    }
-    
-    .save-button, .next-button {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .save-button {
-      background-color: #003087;
-      color: white;
-    }
-    
-    .next-button {
-      background-color: #4CAF50;
-      color: white;
-    }
-    
-    .save-button:hover {
-      background-color: #002266;
-    }
-    
-    .next-button:hover {
-      background-color: #3e8e41;
-    }
-    
-    /* New styles for the tabs page */
-    .tabs-container {
-      display: flex;
-      min-height: 100vh;
-    }
-    
-    .sidebar {
-      width: 250px;
-      background-color: #003087;
-      color: white;
-      padding: 2rem 0;
-    }
-    
-    .tab-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .tab-item {
-      padding: 1rem 2rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .tab-item:hover {
-      background-color: #002266;
-    }
-    
-    .tab-item.active {
-      background-color: #002266;
-      border-left: 4px solid #4CAF50;
-    }
-    
-    .content-area {
-      flex: 1;
-      padding: 2rem;
-    }
-    
-    .tab-content {
-      background-color: white;
-      border-radius: 4px;
-      padding: 2rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .back-button {
-      margin-bottom: 1rem;
-      padding: 0.5rem 1rem;
-      background-color: #f5f5f5;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    <style>
-        /* Existing styles remain unchanged */
-        
-        /* New styles for document management */
-        .document-upload-section {
-          margin-bottom: 2rem;
-          padding: 1.5rem;
-          background-color: #f9f9f9;
-          border-radius: 4px;
-          border: 1px solid #eee;
-        }
-        
-        .upload-controls {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-          margin-top: 1rem;
-        }
-        
-        .file-input {
-          display: none;
-        }
-        
-        .upload-button {
-          padding: 0.75rem 1.5rem;
-          background-color: #003087;
-          color: white;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        }
-        
-        .upload-button:hover {
-          background-color: #002266;
-        }
-        
-        .document-list {
-          margin-top: 2rem;
-        }
-        
-        .document-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem;
-          margin-bottom: 0.5rem;
-          background-color: #f5f5f5;
-          border-radius: 4px;
-          border-left: 4px solid #003087;
-        }
-        
-        .document-name {
-          font-weight: bold;
-          margin-right: 0.5rem;
-        }
-        
-        .document-size {
-          color: #666;
-          font-size: 0.9rem;
-        }
-        
-        .document-actions {
-          display: flex;
-          gap: 0.5rem;
-        }
-        
-        .view-button {
-          padding: 0.5rem 1rem;
-          background-color: #003087;
-          color: white;
-          text-decoration: none;
-          border-radius: 4px;
-          font-size: 0.9rem;
-        }
-        
-        .delete-button {
-          padding: 0.5rem 1rem;
-          background-color: #d9534f;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 0.9rem;
-        }
-        
-        .delete-button:hover {
-          background-color: #c9302c;
-        }
-      </style>
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="root"></div>
@@ -343,6 +82,7 @@
       function handleViewDocument() {
         if (!formData.projectScopeOfWork) return;
         
+        // Create a new window with the PDF content
         const pdfWindow = window.open('');
         pdfWindow.document.write(`
           <html>
@@ -355,95 +95,79 @@
                   height: 100%;
                   overflow: hidden;
                 }
-                embed {
+                object {
                   width: 100%;
                   height: 100%;
                 }
               </style>
             </head>
             <body>
-              <embed 
-                src="${formData.projectScopeOfWork.data}" 
-                type="application/pdf" 
-                width="100%" 
-                height="100%" 
-              />
+              <object 
+                data="${formData.projectScopeOfWork.data}"
+                type="application/pdf"
+                width="100%"
+                height="100%">
+                <p>Unable to display PDF file. <a href="${formData.projectScopeOfWork.data}" target="_blank">Download</a> instead.</p>
+              </object>
             </body>
           </html>
         `);
         pdfWindow.document.close();
       }
       
-      function handleDeleteDocument() {
-        setFormData({
-          ...formData,
-          projectScopeOfWork: null
-        });
-      }
-      
-      function handleSubmit(e) {
-        e.preventDefault();
+      function handleSave() {
         localStorage.setItem('reviewIndexData', JSON.stringify(formData));
         alert('Data saved successfully!');
       }
       
-      function handleNext() {
-        localStorage.setItem('reviewIndexData', JSON.stringify(formData));
-        onNext();
-      }
-      
       return (
         <div className="review-index-container">
-          <header className="review-header">
-            <div className="header-logo">LOGO</div>
+          <div className="review-header">
+            <div className="header-logo">Safety File Management</div>
             <div className="header-text">
-              <h2>PLATINUM</h2>
-              <p>RBMR-ALL-ENG-PRO-0007-FRM-0003    Rev 9.0</p>
+              <h2>Review Index</h2>
+              <p>Please fill in all required information</p>
             </div>
-          </header>
+          </div>
           
-          <h1 className="page-title">REVIEW INDEX</h1>
-          
-          <form onSubmit={handleSubmit} className="review-form">
+          <form className="review-form" onSubmit={(e) => e.preventDefault()}>
             <div className="form-group">
-              <label htmlFor="contractorCompanyName">CONTRACTORS COMPANY'S NAME:</label>
+              <label>Contractor Company Name:</label>
               <input
                 type="text"
-                id="contractorCompanyName"
                 name="contractorCompanyName"
                 value={formData.contractorCompanyName}
                 onChange={handleInputChange}
               />
             </div>
             
-            <div className="form-group">
-              <label htmlFor="servicesDepartment">SERVICES/DEPARTMENT:</label>
-              <input
-                type="text"
-                id="servicesDepartment"
-                name="servicesDepartment"
-                value={formData.servicesDepartment}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="companyVendorProjectNumber">COMPANY'S VENDOR/PROJECT NUMBER:</label>
-              <input
-                type="text"
-                id="companyVendorProjectNumber"
-                name="companyVendorProjectNumber"
-                value={formData.companyVendorProjectNumber}
-                onChange={handleInputChange}
-              />
+            <div className="form-row">
+              <div className="form-group half">
+                <label>Services Department:</label>
+                <input
+                  type="text"
+                  name="servicesDepartment"
+                  value={formData.servicesDepartment}
+                  onChange={handleInputChange}
+                />
+              </div>
+              
+              <div className="form-group half">
+                <label>Company Vendor/Project Number:</label>
+                <input
+                  type="text"
+                  name="companyVendorProjectNumber"
+                  value={formData.companyVendorProjectNumber}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
             
             <div className="form-row">
               <div className="form-group half">
-                <label htmlFor="startingDate">STARTING DATE:</label>
+                <label>Starting Date:</label>
                 <input
                   type="date"
-                  id="startingDate"
                   name="startingDate"
                   value={formData.startingDate}
                   onChange={handleInputChange}
@@ -451,10 +175,9 @@
               </div>
               
               <div className="form-group half">
-                <label htmlFor="completionDate">COMPLETION DATE:</label>
+                <label>Completion Date:</label>
                 <input
                   type="date"
-                  id="completionDate"
                   name="completionDate"
                   value={formData.completionDate}
                   onChange={handleInputChange}
@@ -463,62 +186,36 @@
             </div>
             
             <div className="form-group">
-              <label htmlFor="responsibleCompanyRepresentative">RESPONSIBLE COMPANY REPRESENTATIVE:</label>
+              <label>Responsible Company Representative:</label>
               <input
                 type="text"
-                id="responsibleCompanyRepresentative"
                 name="responsibleCompanyRepresentative"
                 value={formData.responsibleCompanyRepresentative}
                 onChange={handleInputChange}
               />
             </div>
             
-            <div className="form-group scope-of-work-section">
-              <label>PROJECT SCOPE OF WORK:</label>
-              <div className="scope-upload-container" style={{ marginTop: '1rem' }}>
-                <input 
-                  type="file" 
-                  id="scope-upload" 
-                  accept=".pdf" 
-                  onChange={handleFileUpload}
-                  className="file-input"
-                />
-                <label htmlFor="scope-upload" className="upload-button">
-                  {formData.projectScopeOfWork ? 'Replace PDF' : 'Upload PDF'}
-                </label>
-                
-                {formData.projectScopeOfWork && (
-                  <div className="uploaded-document">
-                    <div className="document-info">
-                      <span className="document-name">{formData.projectScopeOfWork.name}</span>
-                      <span className="document-size">
-                        ({Math.round(formData.projectScopeOfWork.size / 1024)} KB)
-                      </span>
-                    </div>
-                    <div className="document-actions">
-                      <button 
-                        type="button"
-                        className="view-button" 
-                        onClick={handleViewDocument}
-                      >
-                        View
-                      </button>
-                      <button 
-                        type="button"
-                        className="delete-button" 
-                        onClick={handleDeleteDocument}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+            <div className="form-group">
+              <label>Project Scope of Work (PDF only):</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={handleFileUpload}
+              />
+              {formData.projectScopeOfWork && (
+                <button onClick={handleViewDocument}>
+                  View Document
+                </button>
+              )}
             </div>
             
             <div className="form-actions">
-              <button type="submit" className="save-button">Save</button>
-              <button type="button" className="next-button" onClick={handleNext}>Next</button>
+              <button className="save-button" onClick={handleSave}>
+                Save
+              </button>
+              <button className="next-button" onClick={onNext}>
+                Next
+              </button>
             </div>
           </form>
         </div>
@@ -561,7 +258,6 @@
         'Checklists'
       ];
       
-      // Handle file upload
       function handleFileUpload(event) {
         const files = Array.from(event.target.files);
         
@@ -592,35 +288,21 @@
           }
         });
         
+        // Save to localStorage
+        setTimeout(() => {
+          localStorage.setItem('tabDocuments', JSON.stringify(documents));
+        }, 100);
+        
+        // Clear the file input
         event.target.value = null;
       }
       
-      // Handle document deletion
-      function handleDeleteDocument(index) {
-        setDocuments(prevDocs => {
-          const tabDocs = [...(prevDocs[activeTab] || [])];
-          tabDocs.splice(index, 1);
-          return {
-            ...prevDocs,
-            [activeTab]: tabDocs
-          };
-        });
-      }
-      
-      // Save documents to localStorage
-      function handleSaveDocuments() {
-        localStorage.setItem('tabDocuments', JSON.stringify(documents));
-        alert('Documents saved successfully!');
-      }
-      
-      // Handle document viewing - Adding this missing function
-      function handleViewDocument(docData) {
-        // Create a new window with the PDF content
+      function handleViewDocument(document) {
         const pdfWindow = window.open('');
         pdfWindow.document.write(`
           <html>
             <head>
-              <title>PDF Viewer</title>
+              <title>${document.name}</title>
               <style>
                 body, html {
                   margin: 0;
@@ -628,62 +310,41 @@
                   height: 100%;
                   overflow: hidden;
                 }
-                embed {
+                object {
                   width: 100%;
                   height: 100%;
                 }
               </style>
             </head>
             <body>
-              <embed 
-                src="${docData}" 
-                type="application/pdf" 
-                width="100%" 
-                height="100%" 
-              />
+              <object 
+                data="${document.data}"
+                type="application/pdf"
+                width="100%"
+                height="100%">
+                <p>Unable to display PDF file. <a href="${document.data}" target="_blank">Download</a> instead.</p>
+              </object>
             </body>
           </html>
         `);
         pdfWindow.document.close();
       }
       
-      // Render the list of documents for the current tab
-      function renderDocumentList() {
-        const tabDocs = documents[activeTab] || [];
-        
-        if (tabDocs.length === 0) {
-          return <p>No documents uploaded for this tab.</p>;
-        }
-        
-        return (
-          <div className="document-list">
-            <h3>Uploaded Documents</h3>
-            <ul>
-              {tabDocs.map((doc, index) => (
-                <li key={index} className="document-item">
-                  <div className="document-info">
-                    <span className="document-name">{doc.name}</span>
-                    <span className="document-size">({Math.round(doc.size / 1024)} KB)</span>
-                  </div>
-                  <div className="document-actions">
-                    <button 
-                      className="view-button" 
-                      onClick={() => handleViewDocument(doc.data)}
-                    >
-                      View
-                    </button>
-                    <button 
-                      className="delete-button" 
-                      onClick={() => handleDeleteDocument(index)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
+      function handleDeleteDocument(index) {
+        setDocuments(prevDocs => {
+          const tabDocs = [...(prevDocs[activeTab] || [])];
+          tabDocs.splice(index, 1);
+          
+          const newDocs = {
+            ...prevDocs,
+            [activeTab]: tabDocs
+          };
+          
+          // Save to localStorage
+          localStorage.setItem('tabDocuments', JSON.stringify(newDocs));
+          
+          return newDocs;
+        });
       }
       
       return (
@@ -692,7 +353,7 @@
             <ul className="tab-list">
               {tabs.map(tab => (
                 <li 
-                  key={tab} 
+                  key={tab}
                   className={`tab-item ${activeTab === tab ? 'active' : ''}`}
                   onClick={() => setActiveTab(tab)}
                 >
@@ -701,46 +362,74 @@
               ))}
             </ul>
           </div>
+          
           <div className="content-area">
             <button className="back-button" onClick={onBack}>
-              &larr; Back to Review Index
+              ← Back to Review Index
             </button>
+            
             <div className="tab-content">
               <h2>{activeTab}</h2>
-              <p>Content for {activeTab} will be implemented here.</p>
               
               <div className="document-upload-section">
-                <h3>Upload PDF Documents</h3>
+                <h3>Upload Documents</h3>
+                <p>Upload PDF documents related to {activeTab}</p>
+                
                 <div className="upload-controls">
                   <input 
                     type="file" 
-                    id="pdf-upload" 
+                    id="document-upload" 
+                    className="file-input" 
                     accept=".pdf" 
-                    multiple 
+                    multiple
                     onChange={handleFileUpload}
-                    className="file-input"
                   />
-                  <label htmlFor="pdf-upload" className="upload-button">
-                    Select PDF Files
+                  <label htmlFor="document-upload" className="upload-button">
+                    Select Files
                   </label>
-                  <button 
-                    className="save-button" 
-                    onClick={handleSaveDocuments}
-                  >
-                    Save Documents
-                  </button>
                 </div>
               </div>
               
-              {renderDocumentList()}
+              <div className="document-list">
+                <h3>Uploaded Documents</h3>
+                
+                {documents[activeTab] && documents[activeTab].length > 0 ? (
+                  documents[activeTab].map((doc, index) => (
+                    <div key={index} className="document-item">
+                      <div>
+                        <span className="document-name">{doc.name}</span>
+                        <span className="document-size">
+                          ({Math.round(doc.size / 1024)} KB)
+                        </span>
+                      </div>
+                      
+                      <div className="document-actions">
+                        <button 
+                          className="view-button"
+                          onClick={() => handleViewDocument(doc)}
+                        >
+                          View
+                        </button>
+                        <button 
+                          className="delete-button"
+                          onClick={() => handleDeleteDocument(index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No documents uploaded for this section yet.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
       );
     }
-    
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    // Render the App component
+    ReactDOM.render(<App />, document.getElementById('root'));
   </script>
 </body>
 </html>
